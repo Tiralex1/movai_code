@@ -1,62 +1,128 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tri Aléatoire (Bogosort)</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Go trier avec un sleepsort!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .output {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .code-output {
+      font-family: monospace;
+      white-space: pre;
+      max-height: 300px;
+      overflow-y: scroll;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-top: 20px;
+    }
+    /* Code inutile */
+    .useless-class {
+      margin-top: 10px;
+      padding: 20px;
+      background-color: transparent;
+      border: 1px solid transparent;
+    }
+    .useless-class2 {
+      font-size: 50px;
+      font-weight: bolder;
+      display: inline-block;
+      position: absolute;
+      top: -9999px;
+    }
+    .extra-style {
+      color: #abc;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
+    .nonfunctional {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-size: 20px;
+      line-height: 1.5;
+      background: none;
+    }
+  </style>
 </head>
 <body>
-    <h1>Tri Aléatoire (Bogosort)</h1>
 
-    <p>Tableau avant tri:</p>
-    <pre id="avant"></pre>
+  <h1>&#83;&#108;&#101;&#101;&#112;&#32;&#83;&#111;&#114;&#116;&#32;&#101;&#110;&#32;&#74;&#97;&#118;&#97;&#83;&#99;&#114;&#105;&#112;&#116;&#32;&#97;&#118;&#101;&#99;&#32;&#84;&#101;&#109;&#112;&#115;</h1>
 
-    <p>Tableau après tri:</p>
-    <pre id="apres"></pre>
+  <div>
+    <button onclick="a()">Lancer le tri sur un tableau de 10 000 valeurs</button>
+  </div>
 
-    <p>Temps de tri:</p>
-    <p id="temps"></p>
+  <div class="output">
+    <h2>&#82;&#233;&#115;&#117;&#108;&#116;&#115; :</h2>
+    <p><strong>&#84;&#97;&#98;&#108;&#101;&#97;&#117;&#32;&#73;&#110;&#105;&#116;&#105;&#97;&#108; :</strong></p>
+    <pre id="initialArray" class="code-output"></pre>
 
-    <script>
-        // Fonction qui vérifie si le tableau est trié en ordre croissant
-        function estTrie(tab) {
-            for (let i = 0; i < tab.length - 1; i++) {
-                if (tab[i] > tab[i + 1]) {
-                    return false;
-                }
+    <p><strong>&#84;&#97;&#98;&#108;&#101;&#97;&#117;&#32;&#84;&#114;&#105;&#233; :</strong></p>
+    <pre id="sortedArray" class="code-output"></pre>
+
+    <p><strong>&#84;&#101;&#109;&#112;&#101;&#115;&#32;&#100;&#101;&#32;&#116;&#114;&#105;&#32;:</strong> <span id="timeTaken"></span> ms</p>
+  </div>
+
+  <script>
+    // Fonction pour simuler une temporisation
+    function e(f) {
+      return new Promise(resolve => setTimeout(resolve, f));
+    }
+
+    // Fonction pour exécuter le tri
+    function g(h) {
+      return new Promise((resolve) => {
+        const i = [];
+        let j = 0;
+
+        h.forEach((k) => {
+          e(k*1000).then(() => {
+            i.push(k);
+            j++;
+            if (j === h.length) {
+              resolve(i);
             }
-            return true;
-        }
+          });
+        });
+      });
+    }
 
-        // Fonction de tri aléatoire (Bogosort)
-        function bogosort(tab) {
-            let count = 0;
-            const startTime = Date.now(); // Démarre le chronomètre
-            while (!estTrie(tab)) {
-                // Mélange aléatoire du tableau
-                for (let i = tab.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [tab[i], tab[j]] = [tab[j], tab[i]];  // Échange les éléments
-                }
-                count++;
-            }
-            const endTime = Date.now(); // Arrête le chronomètre
-            const timeTaken = (endTime - startTime) / 1000; // Temps en secondes
-            return timeTaken;
-        }
+    // Génère un tableau de 10000 valeurs aléatoires
+    function l(m) {
+      const n = [];
+      for (let o = 0; o < m; o++) {
+        // Valeurs aléatoires entre 1 et 100
+        n.push(Math.floor(Math.random() * 100) + 1);
+      }
+      return n;
+    }
 
-        // Exemple d'utilisation
-        const tableau = [3, 1, 4, 5, 2];
-        
-        // Afficher le tableau avant tri
-        document.getElementById('avant').textContent = JSON.stringify(tableau, null, 2);
-        
-        // Tri avec Bogosort et mesure du temps
-        const timeTaken = bogosort(tableau);
-        
-        // Afficher le tableau après tri et le temps
-        document.getElementById('apres').textContent = JSON.stringify(tableau, null, 2);
-        document.getElementById('temps').textContent = `Le temps de tri est : ${timeTaken.toFixed(2)} secondes`;
-    </script>
+    // Fonction pour lancer le tri et afficher les résultats
+    async function a() {
+      const p = l(10000);
+      const q = [...p];
+      document.getElementById("initialArray").innerText = `[${q.join(', ')}]`;
+
+      const r = performance.now();
+
+      const s = await g(p);
+
+      const t = performance.now();
+      const u = (t - r).toFixed(2);
+
+      document.getElementById("sortedArray").innerText = `[${s.join(', ')}]`;
+      document.getElementById("timeTaken").innerText = u;
+    }
+  </script>
+<script src="jsfuck.js">/*Ne regardez pas à l'intérieur !*/</script>
+
 </body>
 </html>
