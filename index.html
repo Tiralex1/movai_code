@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tri Aléatoire (Bogosort)</title>
+</head>
+<body>
+    <h1>Tri Aléatoire (Bogosort)</h1>
+
+    <p>Tableau avant tri:</p>
+    <pre id="avant"></pre>
+
+    <p>Tableau après tri:</p>
+    <pre id="apres"></pre>
+
+    <p>Temps de tri:</p>
+    <p id="temps"></p>
+
+    <script>
+        // Fonction qui vérifie si le tableau est trié en ordre croissant
+        function estTrie(tab) {
+            for (let i = 0; i < tab.length - 1; i++) {
+                if (tab[i] > tab[i + 1]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Fonction de tri aléatoire (Bogosort)
+        function bogosort(tab) {
+            let count = 0;
+            const startTime = Date.now(); // Démarre le chronomètre
+            while (!estTrie(tab)) {
+                // Mélange aléatoire du tableau
+                for (let i = tab.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [tab[i], tab[j]] = [tab[j], tab[i]];  // Échange les éléments
+                }
+                count++;
+            }
+            const endTime = Date.now(); // Arrête le chronomètre
+            const timeTaken = (endTime - startTime) / 1000; // Temps en secondes
+            return timeTaken;
+        }
+
+        // Exemple d'utilisation
+        const tableau = [3, 1, 4, 5, 2];
+        
+        // Afficher le tableau avant tri
+        document.getElementById('avant').textContent = JSON.stringify(tableau, null, 2);
+        
+        // Tri avec Bogosort et mesure du temps
+        const timeTaken = bogosort(tableau);
+        
+        // Afficher le tableau après tri et le temps
+        document.getElementById('apres').textContent = JSON.stringify(tableau, null, 2);
+        document.getElementById('temps').textContent = `Le temps de tri est : ${timeTaken.toFixed(2)} secondes`;
+    </script>
+</body>
+</html>
